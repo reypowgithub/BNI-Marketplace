@@ -33,13 +33,13 @@ class ProductControllers {
     static async getProductById(req, res, next) {
         try {
             const {id} = req.params;
-            const Product = await Product.findByPk(id);
+            const product = await Product.findByPk(id);
 
-            if (!Product) {
+            if (!product) {
                 throw { status: 404, message: "Product Not Found" };
             }
 
-            res.status(200).json({ message: "Product Found", data: Product });
+            res.status(200).json({ message: "Product Found", data: product });
             
         } catch (error) {
             next(error);
