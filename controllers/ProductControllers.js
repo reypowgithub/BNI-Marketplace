@@ -56,14 +56,17 @@ class ProductControllers {
                 throw { status: 400, message: "Bad Request" };
             }
 
-            const Product = await Product.findByPk(id);
+            const product = await Product.findByPk(id);
 
-            if (!Product) {
+            if (!product) {
                 throw { status: 404, message: "Product Not Found" };
             }
 
             // Update Product
-            await Product.update({name, price});
+            await Product.update(
+                {name, price},
+                {where: {id}}
+            );
 
             res.status(200).json({ message: "Product Updated", data: Product });
         } catch (error) {
@@ -74,14 +77,16 @@ class ProductControllers {
     static async deleteProduct(req, res, next) {
         try {
             const {id} = req.params;
-            const Product = await Product.findByPk(id);
+            const product = await Product.findByPk(id);
 
-            if (!Product) {
+            if (!product) {
                 throw { status: 404, message: "Product Not Found" };
             }
 
             // Delete Product
-            await Product.destroy();
+            await Product.destroy({
+                where: {id}
+            });
 
             res.status(200).json({ message: "Product Deleted" });
         } catch (error) {
