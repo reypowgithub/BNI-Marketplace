@@ -17,7 +17,7 @@ class PurchaseControllers {
             }
 
             // cek produk valid
-            const product = await Product.findByPK(Number(productId));
+            const product = await Product.findByPk(Number(productId));
 
             if (!product) { 
                 return res.status(404).json({ message: "Product Not Found" });    
