@@ -21,7 +21,8 @@ class UserControllers {
         throw {status : 400, message : "Email already exist"}
       }
 
-      const hashedPassword = bcrypt.hashSync(password, process.env.SALT_ROUND);
+      const saltRounds = parseInt(process.env.SALT_ROUND, 10);
+      const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
       const newUser = await User.create({
         name,
@@ -69,7 +70,7 @@ class UserControllers {
 
       const token = jwt.sign(payload, process.env.JWT_SECRET);
 
-      res.status(200).json({ accessToken: { token } });
+      res.status(200).json({ accessToken: token });
     } catch (error) {
       next({status : 401, message : "Unauthorized"})
     }
